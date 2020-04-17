@@ -27,7 +27,6 @@ Function Invoke-RemoveTail {
     return $fileName
 }
 
-
 Function Invoke-RemoveHead {
     param(
         [Parameter(Mandatory)]
@@ -48,7 +47,7 @@ Function Invoke-AddHead {
         [Parameter(Mandatory)]
         [string]$headString
     )
-    return $headString+$fileName
+    return $headString + $fileName
 }
 
 Function Invoke-Replace {
@@ -101,9 +100,6 @@ Function Update-FileName {
             }
         }
     }
-
-    
-
 
     return $fileName
 }

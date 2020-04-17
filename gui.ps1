@@ -18,12 +18,12 @@ Function Confirm-Location {
 
 Function Get-EditSelections {
     return  [PSCustomObject]@{ 
-        name_tail       = $name_tail.Text
-        name_head       = $name_head.Text
-        name_prefix     = $name_prefix.Text
-        name_find       = $name_find.Text
-        name_replace    = $name_replace.Text
-        name_spaces     = $name_spaces.IsChecked
+        name_tail    = $name_tail.Text
+        name_head    = $name_head.Text
+        name_prefix  = $name_prefix.Text
+        name_find    = $name_find.Text
+        name_replace = $name_replace.Text
+        name_spaces  = $name_spaces.IsChecked
     }
 }
 
@@ -38,8 +38,8 @@ Function Step-ThroughFiles($operation) {
             foreach ($file in $content) {
                 $fileName = $file.Name
                 switch ($operation) {
-                    0 {break}
-                    1 {$fileName = Update-FileName -fileName $fileName -editSelections $(Get-EditSelections)}
+                    0 { break }
+                    1 { $fileName = Update-FileName -fileName $fileName -editSelections $(Get-EditSelections) }
                     2 {
                         $fileName = Update-FileName -fileName $fileName -editSelections $(Get-EditSelections)
                         Rename-Item -LiteralPath $file.FullName -NewName $fileName
@@ -54,37 +54,35 @@ Function Step-ThroughFiles($operation) {
     }
 }
 
-# Folder Location
-$search.Add_Click(
-    {        
-        if (Confirm-Location) {
-            $location.Text = Get-Folder -initialDirectory $location.Text
+Function Build-ButtonClicks {
+    $search.Add_Click(
+        {        
+            if (Confirm-Location) {
+                $location.Text = Get-Folder -initialDirectory $location.Text
+            }
+            else {
+                $location.Text = Get-Folder
+            }
         }
-        else {
-            $location.Text = Get-Folder
+    ) 
+    $preview_current.Add_Click(
+        {
+            Step-ThroughFiles -operation 0
         }
-    }
-) 
+    )
+    $preview_changes.Add_Click(
+        {
+            Step-ThroughFiles -operation 1
+        }
+    )
+    $commit.Add_Click(
+        {
+            Step-ThroughFiles -operation 2
+        }
+    )
+}
 
-# Preview Current Files @Location
-$preview_current.Add_Click(
-    {
-        Step-ThroughFiles -operation 0
-    }
-)
-
-# Preview Changes
-$preview_changes.Add_Click(
-    {
-        Step-ThroughFiles -operation 1
-    }
-)
-
-# Preview Changes
-$commit.Add_Click(
-    {
-        Step-ThroughFiles -operation 2
-    }
-)
-
-[void]$window.ShowDialog()
+Function Invoke-Interface {
+    Build-ButtonClicks
+    [void]$window.ShowDialog()
+}
