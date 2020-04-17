@@ -11,6 +11,7 @@ Powershell WPF for fixing episode file names
 - [x] Add head of file name
 - [x] Replace part of file name
 - [x] Replace double spaces with single
+- [X] Preview tentative changes from input
 - [ ] Perform *Episode Number* adjustments
 
 #### Additional Objectives
