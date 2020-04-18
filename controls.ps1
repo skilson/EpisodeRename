@@ -50,6 +50,30 @@ Function Invoke-AddHead {
     return $headString + $fileName
 }
 
+Function Invoke-EpisodeFix {
+    param(
+        [Parameter(Mandatory)]
+        [string]$fileName,
+        [Parameter(Mandatory)]
+        [string]$episode_start,
+        [Parameter(Mandatory)]
+        [int]$episode_length,
+        [Parameter(Mandatory)]
+        [int]$episode_change
+    )
+
+    $episodeNum = $fileName.Substring($episode_start.Length, $episode_length)
+    if ($episodeNum -match '^\d+$') {
+        $newEpisodeNum = [string]([int]$episodeNum - $episode_change)
+        if ($newEpisodeNum.Length -eq 1) { 
+            $newEpisodeNum = "0" + $newEpisodeNum 
+        }
+        return $fileName = $fileName.Replace($episodeNum,$newEpisodeNum)
+    } 
+
+    return $fileName + " - Invalid Episode: $episodeNum"
+}
+
 Function Invoke-Replace {
     param(
         [Parameter(Mandatory)]
@@ -73,6 +97,12 @@ Function Update-FileName {
     $selections = $editSelections.PSObject.Members | Where-Object Membertype -like 'NoteProperty'    
     foreach ($selection in $selections) {
         switch ($selection.Name) {
+            episode_fix {
+                if ($selection.Value) {
+                    $fileName = Invoke-EpisodeFix -fileName $fileName -episode_start $editSelections.episode_start `
+                        -episode_length $editSelections.episode_length -episode_change $editSelections.episode_change
+                }
+            }
             name_spaces {
                 if ($selection.Value) {
                     $fileName = Invoke-Replace -fileName $fileName -findString "  " -replaceString " "

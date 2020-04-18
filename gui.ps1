@@ -18,19 +18,24 @@ Function Confirm-Location {
 
 Function Get-EditSelections {
     return  [PSCustomObject]@{ 
-        name_tail    = $name_tail.Text
-        name_head    = $name_head.Text
-        name_prefix  = $name_prefix.Text
-        name_find    = $name_find.Text
-        name_replace = $name_replace.Text
-        name_spaces  = $name_spaces.IsChecked
+        name_tail       = $name_tail.Text
+        name_head       = $name_head.Text
+        name_prefix     = $name_prefix.Text
+        name_find       = $name_find.Text
+        name_replace    = $name_replace.Text
+        name_spaces     = $name_spaces.IsChecked
+
+        episode_fix     = $episode_fix.IsChecked
+        episode_start   = $episode_start.Text
+        episode_length  = $episode_length.Text
+        episode_change  = $episode_change.Text
     }
 }
 
 Function Step-ThroughFiles($operation) {
     if (Confirm-Location) {
         $preview_box.Text = ""
-        $content = Get-ChildItem $location.Text -File
+        $content = Get-ChildItem -LiteralPath $location.Text -File
         if ($content.Length -eq 0) {
             $preview_box.Text = "No files found"
         }
@@ -52,6 +57,20 @@ Function Step-ThroughFiles($operation) {
     else {
         $preview_box.Text = "Missing Location"
     }
+}
+
+Function Clear-Input{
+    $name_tail.Text = ""
+    $name_head.Text = ""
+    $name_prefix.Text = ""
+    $name_find.Text = ""
+    $name_replace.Text = ""
+    $name_spaces.IsChecked = $false
+
+    $episode_fix.IsChecked = $false
+    $episode_change.Text = ""
+    $episode_length.Text = ""
+    $episode_start.Text = ""
 }
 
 Function Build-ButtonClicks {
@@ -78,6 +97,11 @@ Function Build-ButtonClicks {
     $commit.Add_Click(
         {
             Step-ThroughFiles -operation 2
+        }
+    )
+    $reset.Add_Click(
+        {
+            Clear-Input
         }
     )
 }
