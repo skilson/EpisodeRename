@@ -1,4 +1,3 @@
-
 . .\controls.ps1
 
 Add-Type -AssemblyName PresentationCore, PresentationFramework, WindowsBase, system.windows.forms
@@ -12,7 +11,8 @@ $xaml.SelectNodes("//*[@Name]") | ForEach-Object {
 Function Confirm-Location {
     if ($location.Text) {
         return $true
-    } 
+    }
+
     return $false
 }
 

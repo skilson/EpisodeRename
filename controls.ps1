@@ -1,5 +1,4 @@
-﻿
-Function Get-Folder($initialDirectory = "") {
+﻿Function Get-Folder($initialDirectory = "") {
     [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") | Out-Null
 
     $foldername = New-Object System.Windows.Forms.FolderBrowserDialog
@@ -24,6 +23,7 @@ Function Invoke-RemoveTail {
     if ($fileName.Contains($tailStart)) {
         $fileName = "$($fileName.Substring(0,$fileName.IndexOf($tailStart)))$([io.path]::GetExtension($fileName))"
     }
+
     return $fileName
 }
 
@@ -37,6 +37,7 @@ Function Invoke-RemoveHead {
     if ($fileName.Contains($headString)) {
         $fileName = Invoke-Replace -fileName $fileName -findString $headString -replaceString "" 
     }
+
     return $fileName
 }
 
@@ -47,6 +48,7 @@ Function Invoke-AddHead {
         [Parameter(Mandatory)]
         [string]$headString
     )
+
     return $headString + $fileName
 }
 
@@ -85,6 +87,7 @@ Function Invoke-Replace {
     if ($fileName.Contains($findString)) {
         $fileName = $fileName.Replace($findString, $replaceString)
     }
+
     return $fileName
 }
 
