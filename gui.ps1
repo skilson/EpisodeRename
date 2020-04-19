@@ -18,17 +18,17 @@ Function Confirm-Location {
 
 Function Get-EditSelections {
     return  [PSCustomObject]@{ 
-        name_tail       = $name_tail.Text
-        name_head       = $name_head.Text
-        name_prefix     = $name_prefix.Text
-        name_find       = $name_find.Text
-        name_replace    = $name_replace.Text
-        name_spaces     = $name_spaces.IsChecked
+        name_tail      = $name_tail.Text
+        name_head      = $name_head.Text
+        name_prefix    = $name_prefix.Text
+        name_find      = $name_find.Text
+        name_replace   = $name_replace.Text
+        name_spaces    = $name_spaces.IsChecked
 
-        episode_fix     = $episode_fix.IsChecked
-        episode_start   = $episode_start.Text
-        episode_length  = $episode_length.Text
-        episode_change  = $episode_change.Text
+        episode_fix    = $episode_fix.IsChecked
+        episode_start  = $episode_start.Text
+        episode_length = $episode_length.Text
+        episode_change = $episode_change.Text
     }
 }
 
@@ -59,7 +59,7 @@ Function Step-ThroughFiles($operation) {
     }
 }
 
-Function Clear-Input{
+Function Clear-Input {
     $name_tail.Text = ""
     $name_head.Text = ""
     $name_prefix.Text = ""

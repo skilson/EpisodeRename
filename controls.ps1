@@ -70,7 +70,7 @@ Function Invoke-EpisodeFix {
         if ($newEpisodeNum.Length -eq 1) { 
             $newEpisodeNum = "0" + $newEpisodeNum 
         }
-        return $fileName = $fileName.Replace($episodeNum,$newEpisodeNum)
+        return $fileName = $fileName.Replace($episodeNum, $newEpisodeNum)
     } 
 
     return $fileName + " - Invalid Episode: $episodeNum"
