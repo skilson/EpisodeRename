@@ -21,7 +21,7 @@ Function Invoke-RemoveTail {
         [string]$tailStart
     )
     if ($fileName.Contains($tailStart)) {
-        $fileName = "$($fileName.Substring(0,$fileName.IndexOf($tailStart)))$([io.path]::GetExtension($fileName))"
+        $fileName = $($fileName.Substring(0,$fileName.IndexOf($tailStart)))
     }
 
     return $fileName
@@ -76,6 +76,18 @@ Function Invoke-EpisodeFix {
     return $fileName + " - Invalid Episode: $episodeNum"
 }
 
+Function Invoke-ReplacePeriods {
+    param(
+        [Parameter(Mandatory)]
+        [string]$fileName
+    )
+    if ($fileName.Contains(".")) {
+        $fileName = $fileName.Replace(".", " ")
+    }
+
+    return $fileName
+}
+
 Function Invoke-Replace {
     param(
         [Parameter(Mandatory)]
@@ -109,6 +121,11 @@ Function Update-FileName {
             name_spaces {
                 if ($selection.Value) {
                     $fileName = Invoke-Replace -fileName $fileName -findString "  " -replaceString " "
+                } continue
+            }
+            name_periods {
+                if ($selection.Value) {
+                    $fileName = Invoke-ReplacePeriods -fileName $fileName
                 } continue
             }
             name_tail {  

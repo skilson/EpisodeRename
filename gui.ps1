@@ -24,6 +24,7 @@ Function Get-EditSelections {
         name_find      = $name_find.Text
         name_replace   = $name_replace.Text
         name_spaces    = $name_spaces.IsChecked
+        name_periods   = $name_periods.IsChecked
 
         episode_fix    = $episode_fix.IsChecked
         episode_start  = $episode_start.Text
@@ -41,13 +42,14 @@ Function Step-ThroughFiles($operation) {
         }
         else {
             foreach ($file in $content) {
-                $fileName = $file.Name
+                $fileName = $file.BaseName
+                $newFileName = $((Update-FileName -fileName $fileName -editSelections $(Get-EditSelections))+$file.Extension)
                 switch ($operation) {
                     0 { break }
-                    1 { $fileName = Update-FileName -fileName $fileName -editSelections $(Get-EditSelections) }
+                    1 { $fileName = $newFileName }
                     2 {
-                        $fileName = Update-FileName -fileName $fileName -editSelections $(Get-EditSelections)
-                        Rename-Item -LiteralPath $file.FullName -NewName $fileName
+                        $fileName = $newFileName
+                        Rename-Item -LiteralPath $file.FullName -NewName $newFileName
                     }
                 }
                 $preview_box.AppendText("$fileName`n")
